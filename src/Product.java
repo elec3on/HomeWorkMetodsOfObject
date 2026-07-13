@@ -43,10 +43,9 @@ public class Product {
         // Если o null или не Product — не равны
         if (o == null || getClass() != o.getClass()) return false;
 
-        Product other = (Product) o;
+        Product product = (Product) o;
 
         // Товары равны при совпадении id и category
-        // Используем Objects.equals для безопасного сравнения строк (учёт null)
-        return this.id == other.id && Objects.equals(this.category, other.category);
+        return this.id == product.id && Objects.equals(this.category, product.category);
     }
 }

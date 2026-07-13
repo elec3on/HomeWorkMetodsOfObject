@@ -7,8 +7,7 @@ public class Order {
 
     public Order(String customer, Product[] basket) {
         this.customer = customer;
-        // Копируем массив, чтобы нельзя было изменить корзину снаружи
-        this.basket = basket != null ? Arrays.copyOf(basket, basket.length) : null;
+        this.basket = basket;
     }
 
     public String getCustomer() {
@@ -16,8 +15,7 @@ public class Order {
     }
 
     public Product[] getBasket() {
-        // Возвращаем копию, чтобы не менять корзину снаружи
-        return basket != null ? Arrays.copyOf(basket, basket.length) : null;
+        return basket;
     }
 
     @Override
@@ -28,31 +26,17 @@ public class Order {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order other = (Order) o;
-
-        // Сравнение строк с учётом null
-        if (!Objects.equals(this.customer, other.customer)) return false;
-
-        // Сравнение корзин (массивов товаров)
-        if (this.basket == null && other.basket == null) return true;
-        if (this.basket == null || other.basket == null) return false;
-        if (this.basket.length != other.basket.length) return false;
-
-        // Поэлементное сравнение товаров через их equals()
-        for (int i = 0; i < this.basket.length; i++) {
-            Product p1 = this.basket[i];
-            Product p2 = other.basket[i];
-
-            // Если хотя бы один из товаров null — не равны (или можно сделать иначе, но так безопаснее)
-            if (p1 == null || p2 == null) {
-                if (p1 != p2) return false; // один null, другой не null
-                continue;
-            }
-
-            if (!p1.equals(p2)) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
-
+        Order order = (Order) o;
+        if (!Objects.equals(customer, order.customer)) return false;
+        if (basket.length != order.basket.length) return false;
+        for (int i = 0; i < basket.length; i++) {
+            if (!Objects.equals(basket[i], order.basket[i])) {
+                return false;
+            }
+        }
         return true;
     }
 }
